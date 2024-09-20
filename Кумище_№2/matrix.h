@@ -1,4 +1,10 @@
 #pragma once
 
-float** FindSolution(float** martix_A, float** matrix_B, int size_a1, int size_a2, int size_b1, int size_b2, int& size1, int& size2);
+struct Matrix
+{
+	float** matrix = nullptr;
+	int size_1 = 0;
+	int size_2 = 0;
+};
 
+Matrix FindSolution(Matrix* matrices, int size);

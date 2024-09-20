@@ -1,27 +1,36 @@
 #include <iostream>
+#include "matrix.h"
 
-float** FindSolution(float** matrix_A, float** matrix_B, int size_a1, int size_a2, int size_b1, int size_b2, int& size1, int& size2)
+Matrix FindSolution(Matrix* matrices, int size)
 {
-	float** res = nullptr;
+	Matrix res;
 
-	if (size_a1 != size_b1 || size_a2 != size_b2)
-	{
-		std::cout << "Неверные матрицы" << std::endl;
-		return res;
-	}
+	int size1 = matrices[0].size_1;
+	int size2 = matrices[0].size_2;
 
-	res = new float* [size_a1];
-	for (int i = 0; i < size_a1; i++)
+	for (int i = 1; i < size; i++)
 	{
-		res[i] = new float[size_a2];
-		for (int j = 0; j < size_a2; j++)
+		if (size1 != matrices[i].size_1 || size2 != matrices[i].size_2)
 		{
-			res[i][j] = matrix_A[i][j] * matrix_B[i][j];
-			std::cout << res[i][j] << " ";
+			std::cout << "Неверные матрицы" << std::endl;
+			return res;
 		}
-		std::cout << std::endl;
 	}
+	
 
+	res.matrix = new float* [size1];
+	res.size_1 = size1; res.size_2 = size2;
+
+	for (int i = 0; i < size1; i++)
+	{
+		res.matrix[i] = new float[size2];
+		for (int j = 0; j < size2; j++)
+		{
+			res.matrix[i][j] = 1;
+			for (int k = 0; k < size; k++)
+				res.matrix[i][j] *= matrices[k].matrix[i][j];
+		}
+	}
 
 	return res;
 }

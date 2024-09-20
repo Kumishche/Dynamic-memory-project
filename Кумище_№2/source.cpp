@@ -5,32 +5,24 @@
 
 using namespace std;
 
-void PrintMatrix(float** matrix, int size_1, int size_2);
-float** SetMatrix(int& size_1, int& size_2);
+void PrintMatrix(Matrix M);
+void SetMatrix(Matrix& M);
 
-struct Matrix
-{
-	float** matrix;
-	int size_1 = 0;
-	int size_2 = 0;
-};
+//====================
+// Осталось:
+// 1 - проверка на дурака везде вообще
+// 2 - вывод в PrintMatrix() через указатели
+//====================
+
 
 static void Start()
 {
 	string s;
 	string select;
 
-	//Matrix*** matrices = new Matrix**[2];
-
-
-	float** matrix_A = nullptr;
-	float** matrix_B = nullptr;
-	float** res = nullptr;
-	int size_a1 = 0, size_a2 = 0;
-	int size_b1 = 0, size_b2 = 0;
-	int size_res1 = 0, size_res2 = 0;
-	
-
+	int n = 2;
+	Matrix* matrices = new Matrix[n]; 
+	Matrix res;
 
 	cout << "Вариант: " << int('K') % 8 << endl;
 	cout << setw(10) << setfill('-') << " " << endl;
@@ -46,45 +38,28 @@ static void Start()
 		cout << "4 - Выход" << endl;
 		cout << setw(40) << setfill('=') << " " << endl;
 
-
 		cin >> s;
 		switch (s[0])
 		{
 		case '1':
-			cout << "Выберите матрицу для ввода: " << endl;
-			cout << "1 - матрица А	|	2 - матрица B" << endl;
+			cout << "Введите номер матрицы для ввода (1 или 2): " << endl;
 			cin >> select;
+			SetMatrix(matrices[stoi(select) - 1]);
+			break;
 
-			for (int i = 0; i < size_a1; i++)
-			{
-				delete[] matrix_A[i];
-			}
-			delete[] matrix_A;
-			//matrix_A = nullptr; //!!!!!!!!!!!!
-			matrix_A = SetMatrix(size_a1, size_a2);
-			cout << endl;
-			cout << "Задание матрицы B:" << endl;
-			for (int i = 0; i < size_b1; i++)
-			{
-				delete[] matrix_B[i];
-			}
-			delete[] matrix_B;
-			matrix_B = SetMatrix(size_b1, size_b2);
-			break;
 		case '2':
-			cout << "Матрица А: " << endl;
-			PrintMatrix(matrix_A, size_a1, size_a2);
-			cout << "Матрица B: " << endl;
-			PrintMatrix(matrix_B, size_b1, size_b2);
+			cout << "Введите номер матрицы для вывода (1 или 2): " << endl;
+			cin >> select;
+			PrintMatrix(matrices[stoi(select) - 1]);
 			break;
+
 		case '3':
-			res = FindSolution(matrix_A, matrix_B, size_a1, size_a2, size_b1, size_b2, size_res1, size_res2);
-			cout << "Новая матрица: " << endl;
-			PrintMatrix(res, size_res1, size_res2);
+			res = FindSolution(matrices, n);
+			PrintMatrix(res);
 			break;
+
 		case '4':
 			return;
-			break;
 		default:
 			cout << "ерунда какая-то";
 		}
@@ -95,37 +70,41 @@ static void Start()
 }
 
 
-static float** SetMatrix(int& size_1, int& size_2)
+static void SetMatrix(Matrix& M)
 {
-	float** matrix = nullptr;
+	for (int i = 0; i < M.size_1; i++)
+	{
+		delete[] M.matrix[i];
+	}
+	delete[] M.matrix;
 
 	cout << "Введите размеры матрицы: ";
-	cin >> size_1 >> size_2;
+	cin >> M.size_1 >> M.size_2;
 
-	matrix = new float* [size_1];
-	for (int i = 0; i < size_1; i++)
+	cout << "Введите матрицу: " << endl;
+	M.matrix = new float*[M.size_1];
+	for (int i = 0; i < M.size_1; i++)
 	{
-		matrix[i] = new float[size_2];
-		for (int j = 0; j < size_2; j++)
-			cin >> matrix[i][j];
+		M.matrix[i] = new float[M.size_2];
+		for (int j = 0; j < M.size_2; j++)
+			cin >> M.matrix[i][j];
 	}
 
 	cout << "Матрица записана" << endl;
-	return matrix;
 }
 
 
-static void PrintMatrix(float** matrix, int size_1, int size_2)
+static void PrintMatrix(Matrix M)
 {
-	if (matrix == nullptr)
+	if (M.matrix == nullptr)
 		cout << "Матрица не введена" << endl;
 	else
 	{
-		for (int i = 0; i < size_1; i++)
+		for (int i = 0; i < M.size_1; i++)
 		{
-			for (int j = 0; j < size_2; j++)
+			for (int j = 0; j < M.size_2; j++)
 			{
-				cout << matrix[i][j] << " ";
+				cout << M.matrix[i][j] << " ";
 			}
 			cout << endl;
 		}
