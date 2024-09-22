@@ -1,6 +1,6 @@
-#include <iostream>
+п»ї#include <iostream>
 #include <iomanip>
-#include <string>
+#include <Windows.h>
 #include "matrix.h"
 
 using namespace std;
@@ -8,60 +8,85 @@ using namespace std;
 void PrintMatrix(Matrix M);
 void SetMatrix(Matrix& M);
 
+void Check(int& a);
+
 //====================
-// Осталось:
-// 1 - проверка на дурака везде вообще
-// 2 - вывод в PrintMatrix() через указатели
+// РћСЃС‚Р°Р»РѕСЃСЊ:
+// 1 - РїСЂРѕРІРµСЂРєР° РЅР° РґСѓСЂР°РєР° РІРµР·РґРµ РІРѕРѕР±С‰Рµ (done)
+// 2 - РІС‹РІРѕРґ РІ PrintMatrix() С‡РµСЂРµР· СѓРєР°Р·Р°С‚РµР»Рё (in process)
 //====================
 
 
-static void Start()
+int main()
 {
-	string s;
-	string select;
+	SetConsoleCP(1251); SetConsoleOutputCP(1251);
 
+	// РњРµРЅСЋ
+	int c;
+	// Р’С‹Р±РѕСЂ РјР°С‚СЂРёС†С‹
+	int select;
+	// РСЃС…РѕРґРЅРѕРµ РєРѕР»РёС‡РµСЃС‚РІРѕ РјР°С‚СЂРёС†
 	int n = 2;
-	Matrix* matrices = new Matrix[n]; 
+	Matrix* matrices = new Matrix[n];
+	// Р’С‹С‡РёСЃР»РµРЅРЅР°СЏ РјР°С‚СЂС†РёР°
 	Matrix res;
 
-	cout << "Вариант: " << int('K') % 8 << endl;
+	cout << "Р’Р°СЂРёР°РЅС‚: " << int('K') % 8 << endl;
 	cout << setw(10) << setfill('-') << " " << endl;
 	cout << endl;
 
 	while (true)
 	{
-		cout << "Выберите действие: " << endl;
-		cout << "1 - Ввод данных с консоли (матрицы)" << endl;
-		cout << "2 - Вывод данных на консоль (матрицы)" << endl;
-		cout << "3 - Выполнение поэлементного умножения матриц" << endl;
+		cout << "Р’С‹Р±РµСЂРёС‚Рµ РґРµР№СЃС‚РІРёРµ: " << endl;
+		cout << "1 - Р’РІРѕРґ РґР°РЅРЅС‹С… СЃ РєРѕРЅСЃРѕР»Рё (РјР°С‚СЂРёС†С‹)" << endl;
+		cout << "2 - Р’С‹РІРѕРґ РґР°РЅРЅС‹С… РЅР° РєРѕРЅСЃРѕР»СЊ (РјР°С‚СЂРёС†С‹)" << endl;
+		cout << "3 - Р’С‹РїРѕР»РЅРµРЅРёРµ РїРѕСЌР»РµРјРµРЅС‚РЅРѕРіРѕ СѓРјРЅРѕР¶РµРЅРёСЏ РјР°С‚СЂРёС†" << endl;
 		cout << setw(10) << setfill('-') << " " << endl;
-		cout << "4 - Выход" << endl;
+		cout << "4 - Р’С‹С…РѕРґ" << endl;
 		cout << setw(40) << setfill('=') << " " << endl;
 
-		cin >> s;
-		switch (s[0])
+		cin >> c;
+		Check(c);
+
+		switch (c)
 		{
-		case '1':
-			cout << "Введите номер матрицы для ввода (1 или 2): " << endl;
+		case 1:
+			cout << "Р’РІРµРґРёС‚Рµ РЅРѕРјРµСЂ РјР°С‚СЂРёС†С‹ РґР»СЏ РІРІРѕРґР° (1-" << n << ")" << endl;
 			cin >> select;
-			SetMatrix(matrices[stoi(select) - 1]);
+			Check(select);
+			while (select < 1 || select > n)
+			{
+				cout << "РќРµРєРѕСЂСЂРµРєС‚РЅС‹Р№ РІРІРѕРґ" << endl;
+				cout << "РџРѕРІС‚РѕСЂРёС‚Рµ РІРІРѕРґ: ";
+				cin >> select;
+				Check(select);
+			}
+			SetMatrix(matrices[select - 1]);
 			break;
 
-		case '2':
-			cout << "Введите номер матрицы для вывода (1 или 2): " << endl;
+		case 2:
+			cout << "Р’РІРµРґРёС‚Рµ РЅРѕРјРµСЂ РјР°С‚СЂРёС†С‹ РґР»СЏ РІС‹РІРѕРґР° (1-" << n << ")" << endl;
 			cin >> select;
-			PrintMatrix(matrices[stoi(select) - 1]);
+			Check(select);
+			while (select < 1 || select > n)
+			{
+				cout << "РќРµРєРѕСЂСЂРµРєС‚РЅС‹Р№ РІРІРѕРґ" << endl;
+				cout << "РџРѕРІС‚РѕСЂРёС‚Рµ РІРІРѕРґ: ";
+				cin >> select;
+				Check(select);
+			}
+			PrintMatrix(matrices[select - 1]);
 			break;
 
-		case '3':
+		case 3:
 			res = FindSolution(matrices, n);
-			PrintMatrix(res);
+			if (res.size_1 != 0) PrintMatrix(res);
 			break;
 
-		case '4':
-			return;
+		case 4:
+			return 0;
 		default:
-			cout << "ерунда какая-то";
+			cout << "РќРµРєРѕСЂСЂРµРєС‚РЅС‹Р№ РІРІРѕРґ" << endl;
 		}
 
 		cout << setw(40) << setfill('=') << " " << endl;
@@ -70,34 +95,76 @@ static void Start()
 }
 
 
-static void SetMatrix(Matrix& M)
+void Check(int& a)
 {
+	while (cin.fail() || cin.get() != '\n')
+	{
+		cin.clear(); cin.ignore(256, '\n');
+		cout << "РќРµРєРѕСЂСЂРµРєС‚РЅС‹Р№ РІРІРѕРґ" << endl;
+		cout << "РџРѕРІС‚РѕСЂРёС‚Рµ РІРІРѕРґ: ";
+		cin >> a;
+	}
+}
+
+
+void SetMatrix(Matrix& M)
+{
+	int s1, s2;
+
 	for (int i = 0; i < M.size_1; i++)
 	{
 		delete[] M.matrix[i];
 	}
 	delete[] M.matrix;
 
-	cout << "Введите размеры матрицы: ";
-	cin >> M.size_1 >> M.size_2;
-
-	cout << "Введите матрицу: " << endl;
-	M.matrix = new float*[M.size_1];
-	for (int i = 0; i < M.size_1; i++)
+	cout << "Р’РІРµРґРёС‚Рµ РєРѕР»РёС‡РµСЃС‚РІРѕ СЃС‚СЂРѕРє РјР°С‚СЂРёС†С‹: ";
+	cin >> s1;
+	Check(s1);
+	while (s1 < 1)
 	{
-		M.matrix[i] = new float[M.size_2];
-		for (int j = 0; j < M.size_2; j++)
-			cin >> M.matrix[i][j];
+		cout << "РќРµРєРѕСЂСЂРµРєС‚РЅС‹Р№ РІРІРѕРґ" << endl;
+		cout << "РџРѕРІС‚РѕСЂРёС‚Рµ РІРІРѕРґ: ";
+		cin >> s1;
+		Check(s1);
 	}
 
-	cout << "Матрица записана" << endl;
+	cout << "Р’РІРµРґРёС‚Рµ РєРѕР»РёС‡РµСЃС‚РІРѕ СЃС‚РѕР»Р±С†РѕРІ РјР°С‚СЂРёС†С‹: ";
+	cin >> s2;
+	Check(s2);
+	while (s2 < 1)
+	{
+		cout << "РќРµРєРѕСЂСЂРµРєС‚РЅС‹Р№ РІРІРѕРґ" << endl;
+		cout << "РџРѕРІС‚РѕСЂРёС‚Рµ РІРІРѕРґ: ";
+		cin >> s2;
+		Check(s2);
+	}
+
+	cout << "Р’РІРµРґРёС‚Рµ РјР°С‚СЂРёС†Сѓ: " << endl;
+	M = Matrix(s1, s2);
+	for (int i = 0; i < M.size_1; i++)
+	{
+		for (int j = 0; j < M.size_2; j++)
+		{
+			cin >> M.matrix[i][j];
+			while (cin.fail())
+			{
+				cin.clear(); cin.ignore(256, '\n');
+				cout << "РќРµРєРѕСЂСЂРµРєС‚РЅС‹Р№ РІРІРѕРґ" << endl;
+				cout << "РџРѕРІС‚РѕСЂРёС‚Рµ РІРІРѕРґ, РЅР°С‡РёРЅР°СЏ СЃ СЌР»РµРјРµРЅС‚Р° matrix[" << i << "][" << j << "] (РІРєР»СЋС‡РёС‚РµР»СЊРЅРѕ): ";
+				cin >> M.matrix[i][j];
+			}
+		}
+	}
+
+	cin.ignore(256, '\n');
+	cout << "РњР°С‚СЂРёС†Р° Р·Р°РїРёСЃР°РЅР°" << endl;
 }
 
 
-static void PrintMatrix(Matrix M)
+void PrintMatrix(Matrix M)
 {
 	if (M.matrix == nullptr)
-		cout << "Матрица не введена" << endl;
+		cout << "РњР°С‚СЂРёС†Р° РЅРµ РІРІРµРґРµРЅР°" << endl;
 	else
 	{
 		for (int i = 0; i < M.size_1; i++)

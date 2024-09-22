@@ -129,7 +129,6 @@
   <ItemGroup>
     <ClCompile Include="matrix.cpp" />
     <ClCompile Include="source.cpp" />
-    <ClCompile Include="Кумище_№2.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="matrix.h" />

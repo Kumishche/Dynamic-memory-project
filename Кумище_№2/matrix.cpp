@@ -17,13 +17,16 @@ Matrix FindSolution(Matrix* matrices, int size)
 		}
 	}
 	
+	if (size1 == 0)
+	{
+		std::cout << "Отсутствуют матрицы" << std::endl;
+		return res;
+	}
 
-	res.matrix = new float* [size1];
-	res.size_1 = size1; res.size_2 = size2;
+	res = Matrix(size1, size2);
 
 	for (int i = 0; i < size1; i++)
 	{
-		res.matrix[i] = new float[size2];
 		for (int j = 0; j < size2; j++)
 		{
 			res.matrix[i][j] = 1;
