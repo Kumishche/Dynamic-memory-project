@@ -10,13 +10,6 @@ void SetMatrix(Matrix& M);
 
 void Check(int& a);
 
-//====================
-// Осталось:
-// 1 - проверка на дурака везде вообще (done)
-// 2 - вывод в PrintMatrix() через указатели (in process)
-//====================
-
-
 int main()
 {
 	SetConsoleCP(1251); SetConsoleOutputCP(1251);
@@ -167,11 +160,12 @@ void PrintMatrix(Matrix M)
 		cout << "Матрица не введена" << endl;
 	else
 	{
-		for (int i = 0; i < M.size_1; i++)
+		float** p = &M.matrix[0];
+		for (; p < &(M.matrix[0]) + M.size_1; p++)
 		{
-			for (int j = 0; j < M.size_2; j++)
+			for (int i = 0; i < M.size_2; i++)
 			{
-				cout << M.matrix[i][j] << " ";
+				cout << *(*p + i) << " ";
 			}
 			cout << endl;
 		}
