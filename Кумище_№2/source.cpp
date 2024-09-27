@@ -5,7 +5,7 @@
 
 using namespace std;
 
-void PrintMatrix(Matrix M);
+void PrintMatrix(Matrix& M);
 void SetMatrix(Matrix& M);
 
 void Check(int& a);
@@ -19,8 +19,8 @@ int main()
 	// Выбор матрицы
 	int select;
 	// Исходное количество матриц
-	int n = 2;
-	Matrix* matrices = new Matrix[n];
+	const int n = 2;
+	Matrix matrices[n];
 	// Вычисленная матрциа
 	Matrix res;
 
@@ -154,14 +154,14 @@ void SetMatrix(Matrix& M)
 }
 
 
-void PrintMatrix(Matrix M)
+void PrintMatrix(Matrix& M)
 {
 	if (M.matrix == nullptr)
 		cout << "Матрица не введена" << endl;
 	else
 	{
-		float** p = &M.matrix[0];
-		for (; p < &(M.matrix[0]) + M.size_1; p++)
+		float** p = M.matrix;
+		for (; p < M.matrix + M.size_1; p++)
 		{
 			for (int i = 0; i < M.size_2; i++)
 			{
